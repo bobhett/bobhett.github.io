@@ -5,7 +5,7 @@ if (!ndef) alert ("No NDEF");
 function scan() {
   ndef.scan();
   ndef.onreading = event => {
-    alert("Tag detected:", JSON.stringify(event.message.records));
+    alert("Tag detected:", JSON.stringify(event.message));
     // Handle the NFC data here
   };
 }
