@@ -8,6 +8,8 @@ catch (e) {
 }
 
 function scan() {
+  document.getElementById("label").innerHTML = "Scanning...";
+  document.getElementById("button").style.visibility="hidden";
   ndef.scan();
   ndef.onreading = event => {
     let html = `<p><strong>Records found:</strong> ${event.message.records.length}</p>`;
@@ -38,24 +40,6 @@ function scan() {
     document.getElementById("msg").innerHTML = html;
   }
 }
-function decodeTextRecord(data) {
-  const view = new DataView(data.buffer, data.byteOffset, data.byteLength);
-  
-  // First byte contains:
-  // Bit 7: UTF encoding (0 = UTF-8, 1 = UTF-16)
-  // Bits 5-0: Language code length
-  const statusByte = view.getUint8(0);
-  const isUTF16 = (statusByte & 0x80) !== 0;
-  const languageLength = statusByte & 0x3F;
-  
-  // Text starts after status byte + language code
-  const textStart = 1 + languageLength;
-  const textData = data.buffer.slice(data.byteOffset + textStart);
-  
-  const decoder = new TextDecoder(isUTF16 ? "utf-16" : "utf-8");
-  return decoder.decode(textData);
-}
-</script>
-NFC Tester
-<button onclick = "scan()">Scan</button>
+<span id="label">NFC Tester</span>
+<button onclick = "scan()" id="button">Scan</button>
 <div style="border: 1px solid black; min-height: 3em" id="msg"></div>
