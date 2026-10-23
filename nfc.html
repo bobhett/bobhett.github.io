@@ -1,6 +1,11 @@
 <script> 
-const ndef = new NDEFReader();
-if (!ndef) alert ("No NDEF");
+const ndef = null;
+try {
+  ndef = new NDEFReader();
+}
+catch (e) {
+  alert ("NFC not supported on this device/browser/OS.  Chrome on Android only.");
+}
 
 function scan() {
   ndef.scan();
