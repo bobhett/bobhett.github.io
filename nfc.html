@@ -15,21 +15,15 @@ function scan() {
     event.message.records.forEach((record, index) => {
       html += `<p><strong>Record ${index}:</strong> ${record.recordType}</p>`;
       
-      if (record.recordType === "text") {
-        try {
-          const data = record.data;
-          const statusByte = data.getUint8(0);
-          const languageLength = statusByte & 0x3F;
-          const textStart = 1 + languageLength;
-          
-          html += `<p><strong>Debug:</strong> Data length=${data.byteLength}, Status=${statusByte}, Lang len=${languageLength}, Text starts at=${textStart}</p>`;
-          
-          const text = decodeTextRecord(record.data);
-          html += `<p><strong>Text:</strong> ${text}</p>`;
-        } catch (e) {
-          html += `<p style="color: red;">Error: ${e.message}</p>`;
-        }
-      } else if (record.recordType === "url") {
+        if (record.recordType === "text") {
+          try {
+            const decoder = new TextDecoder("utf-8");
+            const text = decoder.decode(new Uint8Array(record.data.buffer, record.data.byteOffset, record.data.byteLength));
+            html += `<p><strong>Text:</strong> ${text}</p>`;
+          } catch (e) {
+            html += `<p style="color: red;">Error decoding: ${e.message}</p>`;
+          }
+        } else if (record.recordType === "url") {
         try {
           const decoder = new TextDecoder("utf-8");
           const url = decoder.decode(record.data.buffer.slice(1));
