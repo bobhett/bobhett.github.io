@@ -17,12 +17,11 @@ function scan() {
       
       if (record.recordType === "text") {
         try {
-          const decoder = new TextDecoder("utf-8");
-          const text = decoder.decode(record.data.buffer.slice(1));
+          const text = decodeTextRecord(record.data);
           html += `<p><strong>Text:</strong> ${text}</p>`;
         } catch (e) {
           html += `<p style="color: red;">Error decoding: ${e.message}</p>`;
-        }
+        }      
       } else if (record.recordType === "url") {
         try {
           const decoder = new TextDecoder("utf-8");
@@ -37,6 +36,23 @@ function scan() {
     });
     document.getElementById("msg").innerHTML = html;
   }
+}
+function decodeTextRecord(data) {
+  const view = new DataView(data.buffer, data.byteOffset, data.byteLength);
+  
+  // First byte contains:
+  // Bit 7: UTF encoding (0 = UTF-8, 1 = UTF-16)
+  // Bits 5-0: Language code length
+  const statusByte = view.getUint8(0);
+  const isUTF16 = (statusByte & 0x80) !== 0;
+  const languageLength = statusByte & 0x3F;
+  
+  // Text starts after status byte + language code
+  const textStart = 1 + languageLength;
+  const textData = data.buffer.slice(data.byteOffset + textStart);
+  
+  const decoder = new TextDecoder(isUTF16 ? "utf-16" : "utf-8");
+  return decoder.decode(textData);
 }
 </script>
 NFC Tester
