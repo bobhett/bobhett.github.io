@@ -10,10 +10,10 @@ catch (e) {
 function scan() {
   ndef.scan();
   ndef.onreading = event => {
-    alert("Tag detected:", JSON.stringify(event.message));
-    // Handle the NFC data here
+    document.getElementById("msg").innerHTML = "Tag detected:" + JSON.stringify(event.message);
   };
 }
 </script>
 NFC Tester
 <button onclick = "scan()">Scan</button>
+<div style="border: 1px solid black; min-height: 3em" id="msg"></div>
