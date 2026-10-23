@@ -1,6 +1,8 @@
 <script> 
 var ndef = null;
-try {
+const TOPIC = "dance-continua-peak-to-peak-collab-34CB27D41E"; 
+
+  try {
   ndef = new NDEFReader();
 }
 catch (e) {
@@ -37,7 +39,11 @@ function scan() {
         html += `<p><strong>Raw data:</strong> ${record.data}</p>`;
       }
     });
+    // display records
     document.getElementById("msg").innerHTML = html;
+
+    // play tone
+    fetch(`https://ntfy.sh/${TOPIC}`, { method: "POST", body: "beep" });
   }
 }
 </script>
