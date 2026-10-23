@@ -17,11 +17,18 @@ function scan() {
       
       if (record.recordType === "text") {
         try {
+          const data = record.data;
+          const statusByte = data.getUint8(0);
+          const languageLength = statusByte & 0x3F;
+          const textStart = 1 + languageLength;
+          
+          html += `<p><strong>Debug:</strong> Data length=${data.byteLength}, Status=${statusByte}, Lang len=${languageLength}, Text starts at=${textStart}</p>`;
+          
           const text = decodeTextRecord(record.data);
           html += `<p><strong>Text:</strong> ${text}</p>`;
         } catch (e) {
-          html += `<p style="color: red;">Error decoding: ${e.message}</p>`;
-        }      
+          html += `<p style="color: red;">Error: ${e.message}</p>`;
+        }
       } else if (record.recordType === "url") {
         try {
           const decoder = new TextDecoder("utf-8");
