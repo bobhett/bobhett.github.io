@@ -1,8 +1,14 @@
 <script> 
 const ndef = new NDEFReader();
-ndef.scan();
-ndef.onreading = event => {
-  alert("Tag detected:", JSON.stringify(event.message.records));
-  // Handle the NFC data here
-};
+if (!ndef) alert ("No NDEF");
+
+function scan() {
+  ndef.scan();
+  ndef.onreading = event => {
+    alert("Tag detected:", JSON.stringify(event.message.records));
+    // Handle the NFC data here
+  };
+}
 </script>
+NFC Tester
+<button onclick = "scan()">Scan</button>button>
