@@ -1,0 +1,8 @@
+<script> 
+const ndef = new NDEFReader();
+ndef.scan();
+ndef.onreading = event => {
+  alert("Tag detected:", JSON.stringify(event.message.records));
+  // Handle the NFC data here
+};
+</script>
