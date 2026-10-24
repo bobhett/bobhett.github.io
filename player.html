@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <button id="start">Start listening</button>
-<p id="status">Not listening</p>
+<div id="status">Not listening</div>
 <script>
 const TOPIC = "dance-continua-peak-to-peak-collab-34CB27D41E"; 
 
@@ -10,7 +10,7 @@ document.getElementById("start").onclick = () => {
   function action(msg) {
     const data = JSON.parse(msg.message); // Works fine
     html = `{"phoneId": ${data.phoneId}, "chipId": "${data.chipId}"}`;
-    document.getElementById("status").textContent += html + "<br>";
+    document.getElementById("status").innerHTML += html + "<br>";
     
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
@@ -24,7 +24,7 @@ document.getElementById("start").onclick = () => {
   }
 
   const es = new EventSource(`https://ntfy.sh/${TOPIC}/sse`);
-  es.onopen = () => document.getElementById("status").textContent = "Listening...<br>";
+  es.onopen = () => document.getElementById("status").innerHTML = "Listening...<br>";
   es.onmessage = (e) => {
     const msg = JSON.parse(e.data);
     if (msg.event === "message") action(msg);
