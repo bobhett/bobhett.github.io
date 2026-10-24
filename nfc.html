@@ -12,14 +12,14 @@ catch (e) {
 function scan() {
   phoneId = document.getElementById("phoneId").value;
   
-  document.getElementById("label").innerHTML = "Scanning...";
+  document.getElementById("label").innerHTML = "Waiting for scans...";
   document.getElementById("phoneId").style.visibility="hidden";
   document.getElementById("button").style.visibility="hidden";
   ndef.scan();
   ndef.onreading = event => {
 
     // build message as JSON string
-    msg = `{"phoneId": ${phoneId}, "chipId": "${event.serialNumber"}`;
+    msg = `{"phoneId": ${phoneId}, "chipId": "${event.serialNumber}"`;
     
     // display locally
     document.getElementById("msg").innerHTML += msg + "<br>";
