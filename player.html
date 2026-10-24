@@ -7,8 +7,8 @@ const TOPIC = "dance-continua-peak-to-peak-collab-34CB27D41E";
 document.getElementById("start").onclick = () => {
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
 
-  function action(msgEvent) {
-    console.log(msgEvent);
+  function action(msg) {
+    console.log(msg);
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
     osc.frequency.value = 880;
@@ -24,7 +24,7 @@ document.getElementById("start").onclick = () => {
   es.onopen = () => document.getElementById("status").textContent = "Listening...";
   es.onmessage = (e) => {
     const msg = JSON.parse(e.data);
-    if (msg.event === "message") action(msg.event);
+    if (msg.event === "message") action(msg);
   };
   es.onerror = () => document.getElementById("status").textContent = "Connection issue, retrying...";
 };
