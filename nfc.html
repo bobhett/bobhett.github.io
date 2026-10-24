@@ -2,7 +2,7 @@
 var ndef = null;
 const TOPIC = "dance-continua-peak-to-peak-collab-34CB27D41E"; 
 
-  try {
+try {
   ndef = new NDEFReader();
 }
 catch (e) {
@@ -14,36 +14,12 @@ function scan() {
   document.getElementById("button").style.visibility="hidden";
   ndef.scan();
   ndef.onreading = event => {
-    let html = `<p><strong>Records found:</strong> ${event.message.records.length}</p>`;
-    
-    event.message.records.forEach((record, index) => {
-      html += `<p><strong>Record ${index}:</strong> ${record.recordType}</p>`;
-      
-        if (record.recordType === "text") {
-          try {
-            const decoder = new TextDecoder("utf-8");
-            const text = decoder.decode(new Uint8Array(record.data.buffer, record.data.byteOffset, record.data.byteLength));
-            html += `<p><strong>Text:</strong> ${text}</p>`;
-          } catch (e) {
-            html += `<p style="color: red;">Error decoding: ${e.message}</p>`;
-          }
-        } else if (record.recordType === "url") {
-        try {
-          const decoder = new TextDecoder("utf-8");
-          const url = decoder.decode(record.data.buffer.slice(1));
-          html += `<p><strong>URL:</strong> <a href="${url}">${url}</a></p>`;
-        } catch (e) {
-          html += `<p style="color: red;">Error decoding: ${e.message}</p>`;
-        }
-      } else {
-        html += `<p><strong>Raw data:</strong> ${record.data}</p>`;
-      }
-    });
-    // display records
-    document.getElementById("msg").innerHTML = html;
 
-    // play tone
-    fetch(`https://ntfy.sh/${TOPIC}`, { method: "POST", body: "beep" });
+    // display records
+    document.getElementById("msg").innerHTML += `Tapped by: ${event.serialNumber}<br>`;
+
+    // inform server of scan
+    fetch(`https://ntfy.sh/${TOPIC}`, { method: "POST", body: `Tapped by: ${event.serialNumber}`});
   }
 }
 </script>
