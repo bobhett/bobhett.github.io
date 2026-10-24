@@ -18,9 +18,10 @@ function scan() {
   ndef.scan();
   ndef.onreading = event => {
 
-    msg = `{phoneId: ${phoneId}, chipId: ${event.serialNumber}`;
+    // build message as JSON string
+    msg = `{"phoneId": ${phoneId}, "chipId": "${event.serialNumber"}`;
     
-    // display records
+    // display locally
     document.getElementById("msg").innerHTML += msg + "<br>";
 
     // inform server of scan
