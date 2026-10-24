@@ -9,7 +9,7 @@ document.getElementById("start").onclick = () => {
 
   function action(msg) {
     const data = JSON.parse(msg.message); // Works fine
-    html = `{"phoneId": ${phoneId}, "chipId": "${event.serialNumber}"}`;
+    html = `{"phoneId": ${data.phoneId}, "chipId": "${data.chipId}"}`;
     document.getElementById("status").textContent += html + "<br>";
     
     const osc = ctx.createOscillator();
@@ -24,7 +24,7 @@ document.getElementById("start").onclick = () => {
   }
 
   const es = new EventSource(`https://ntfy.sh/${TOPIC}/sse`);
-  es.onopen = () => document.getElementById("status").textContent = "Listening...";
+  es.onopen = () => document.getElementById("status").textContent = "Listening...<br>";
   es.onmessage = (e) => {
     const msg = JSON.parse(e.data);
     if (msg.event === "message") action(msg);
