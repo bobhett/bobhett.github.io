@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<audio id="clip1">
-  <source src="EDM.mp3" type="audio/mpeg">
-</audio>
 <button id="start">Start listening</button>
 <div id="status">Not listening</div>
 <script>
-const TOPIC = "dance-continua-peak-to-peak-collab-34CB27D41E"; 
+  const TOPIC = "dance-continua-peak-to-peak-collab-34CB27D41E"; 
 
-document.getElementById("start").onclick = () => {
+  // prefetch audio file to reduce latency on first play
+  fetch('EDM.mp3'); 
+
+  // must have some user interaction before music can play, so force a user button click
+  document.getElementById("start").onclick = () => {
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
 
   function action(msg) {
@@ -26,7 +27,8 @@ document.getElementById("start").onclick = () => {
       osc.stop(ctx.currentTime + 0.5);
     }
     else if (data.phoneId == 2) {
-      document.getElementById("clip1").play();
+      const audio = new Audio('EDM.mp3');
+      audio.play();    
     }
     else if (data.phoneId == 3) {
       const osc = ctx.createOscillator();
