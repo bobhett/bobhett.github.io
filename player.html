@@ -8,7 +8,10 @@ document.getElementById("start").onclick = () => {
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
 
   function action(msg) {
-    console.log(msg);
+    const data = JSON.parse(msg.message); // Works fine
+    html = `{"phoneId": ${phoneId}, "chipId": "${event.serialNumber}"}`;
+    document.getElementById("status").textContent += html + "<br>";
+    
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
     osc.frequency.value = 880;
