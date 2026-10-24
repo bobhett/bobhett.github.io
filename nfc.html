@@ -19,7 +19,7 @@ function scan() {
   ndef.onreading = event => {
 
     // build message as JSON string
-    msg = `{"phoneId": ${phoneId}, "chipId": "${event.serialNumber}"`;
+    msg = `{"phoneId": ${phoneId}, "chipId": "${event.serialNumber}"}`;
     
     // display locally
     document.getElementById("msg").innerHTML += msg + "<br>";
