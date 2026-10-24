@@ -10,19 +10,25 @@ catch (e) {
 }
 
 function scan() {
+  phoneId = document.getElementById("phoneId").value;
+  
   document.getElementById("label").innerHTML = "Scanning...";
+  document.getElementById("phoneId").style.visibility="hidden";
   document.getElementById("button").style.visibility="hidden";
   ndef.scan();
   ndef.onreading = event => {
 
+    msg = `{phoneId: ${phoneId}, chipId: ${event.serialNumber}`;
+    
     // display records
-    document.getElementById("msg").innerHTML += `Tapped by: ${event.serialNumber}<br>`;
+    document.getElementById("msg").innerHTML += msg + "<br>";
 
     // inform server of scan
-    fetch(`https://ntfy.sh/${TOPIC}`, { method: "POST", body: `Tapped by: ${event.serialNumber}`});
+    fetch(`https://ntfy.sh/${TOPIC}`, { method: "POST", body: msg});
   }
 }
 </script>
 <span id="label">NFC Tester</span>
+<select id="phoneId"><option>1</option><option>2</option><option>3</option></select>select>
 <button onclick = "scan()" id="button">Scan</button>
-<div style="border: 1px solid black; min-height: 3em" id="msg"></div>
+<div style="border: 1px solid black; min-height: 10em" id="msg"></div>
