@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<audio id="clip1" src="EDM.jpg"></audio>
+<audio controls id="clip1" src="EDM.jpg"></audio>
 <button id="start">Start listening</button>
 <div id="status">Not listening</div>
 <script>
@@ -12,7 +12,7 @@ document.getElementById("start").onclick = () => {
     const data = JSON.parse(msg.message); // Works fine
     html = `{"phoneId": ${data.phoneId}, "chipId": "${data.chipId}"}`;
     document.getElementById("status").innerHTML += html + "<br>";
-    if (phoneId == 1) {
+    if (data.phoneId == 1) {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.frequency.value = 880;
@@ -23,10 +23,10 @@ document.getElementById("start").onclick = () => {
       osc.start();
       osc.stop(ctx.currentTime + 0.5);
     }
-    else if (phoneId == 2) {
+    else if (data.phoneId == 2) {
       document.getElementById("clip1").play();
     }
-    else if (phoneId == 3) {
+    else if (data.phoneId == 3) {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.frequency.value = 1200;
